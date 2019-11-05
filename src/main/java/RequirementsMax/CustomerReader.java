@@ -9,15 +9,15 @@ import java.util.List;
 
 public class CustomerReader {
 
-    List<Customer> getCustomers() {
+    List<Customer> getCustomers(String file) {
         String st;
         String[] tokens;
         List<Customer> customers = new ArrayList<Customer>();
-        InputStream is = getClass().getResourceAsStream("/nrpe1.txt");
+        InputStream is = getClass().getResourceAsStream(file);
         InputStreamReader isr = new InputStreamReader(is);
         try {
             BufferedReader br = new BufferedReader(isr);
-            for (int i = 0; i < 5; i++) { // ignore first 5 lines
+            for (int i = 0; i < 2; i++) { // ignore first 2 lines
                 br.readLine();
             }
             while ((st = br.readLine()) != null) {

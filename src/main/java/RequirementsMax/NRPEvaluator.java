@@ -9,27 +9,31 @@ import java.util.List;
 import java.util.Set;
 
 public class NRPEvaluator implements Evaluator<String> {
+    private final String fileName = "/nrp1classic.txt";
     private List<Customer> customers;
+    private int[] requirementsCost;
 
     public NRPEvaluator() {
         CustomerReader cr = new CustomerReader();
-        customers = cr.getCustomers();
+        customers = cr.getCustomers(fileName);
+        RequirementReader rr = new RequirementReader();
+        requirementsCost = rr.getRequirementCosts(fileName);
     }
 
     @Override
     public Objectives evaluate(String phenotype) {
         Objectives objectives = new Objectives();
         objectives.add("Customer Value", Sign.MAX, evaluateCustomerValueFitness(phenotype));
-        objectives.add("Requirement Difficulty", Sign.MIN, evaluateNumberOfReqFitness(phenotype));
+        objectives.add("Requirement Cost", Sign.MIN, evaluateReqCostFitness(phenotype));
         return objectives;
     }
 
-    private double evaluateNumberOfReqFitness(String phenotype) {
+    private double evaluateReqCostFitness(String phenotype) {
         double count = 0.0;
         int phenotypeLength = phenotype.length();
         for (int i = 0; i < phenotypeLength; i++) {
             if (phenotype.charAt(i) == '1')
-                count += i; // Requirements number is also its weight
+                count += requirementsCost[i]; // Requirements number is also its weight
         }
         return count;
     }
