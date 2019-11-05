@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 public class NRPEvaluator implements Evaluator<String> {
-    private final String fileName = "/nrp1classic.txt";
+    private final String fileName = "/nrp1realistic.txt";
     private List<Customer> customers;
     private int[] requirementsCost;
 
@@ -41,20 +41,17 @@ public class NRPEvaluator implements Evaluator<String> {
     private double evaluateCustomerValueFitness(String phenotype) {
 
         double score = 0.0;
-        String reqId = "";
-        List<Customer> customersTemp = new ArrayList<Customer>();
-        for (Customer c : customers) { // Deep copy
-            customersTemp.add(new Customer(c.getValue(), c.getDesiredRequirements()));
-        }
+        String reqId;
         int phenotypeLength = phenotype.length();
         for (int i = 0; i < phenotypeLength; i++) {
-            if (phenotype.charAt(i) == '1')
+            if (phenotype.charAt(i) == '1') {
                 reqId = Integer.toString(i + 1);
-            for (Customer c : customersTemp) {
-                Set<String> dr = c.getDesiredRequirements();
-                dr.remove(reqId);
-                if (dr.isEmpty()) { // Customer satisfied
-                    score += c.getValue();
+                for (Customer c : customers) {
+                    ArrayList<String> dr = c.getDesiredRequirements();
+                    int index = dr.indexOf(reqId);
+                    if (index != -1) {
+                        score += (c.getValue() * (dr.size() - index)); // the requirements that are first in order and requested by more important customers are prioritised
+                    }
                 }
             }
         }
