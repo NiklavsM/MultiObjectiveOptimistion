@@ -3,15 +3,15 @@ package RequirementsMax;
 import java.util.ArrayList;
 
 public class Customer {
-    private int value;
+    private double value;
     private ArrayList<String> desiredRequirements;
 
-    public Customer(int value) {
+    public Customer(double value) {
         this.value = value;
         desiredRequirements = new ArrayList<String>();
     }
 
-    public int getValue() {
+    public double getValue() {
         return value;
     }
 

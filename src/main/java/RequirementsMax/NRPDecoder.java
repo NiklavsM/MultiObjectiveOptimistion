@@ -6,8 +6,8 @@ import org.opt4j.core.problem.Decoder;
 public class NRPDecoder implements Decoder<BooleanGenotype, String>{
     public String decode(BooleanGenotype genotype) {
         StringBuilder phenotype = new StringBuilder();
-        for (Boolean testActive : genotype) {
-            if (testActive)
+        for (Boolean requirementActive : genotype) {
+            if (requirementActive)
                 phenotype.append("1");
             else
                 phenotype.append("0");
